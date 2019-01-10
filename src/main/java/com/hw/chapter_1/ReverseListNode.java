@@ -24,6 +24,11 @@ public class ReverseListNode {
         }
     }
 
+    /**
+     *  递归调用
+     * @param head
+     * @return
+     */
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -33,6 +38,29 @@ public class ReverseListNode {
         ListNode reverse = reverseList(node);
         node.next = head;
         return reverse;
+    }
+
+    /**
+     * 非递归调用
+     * @param head
+     * @return
+     */
+    public ListNode reverseList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode p = head;
+        ListNode q = p.next;
+        ListNode r = q.next;
+        q.next = p;
+        p.next = null;
+        while (r != null) {
+            p = q;
+            q = r;
+            r = r.next;
+            q.next = p;
+        }
+        return q;
     }
 
     @Test
