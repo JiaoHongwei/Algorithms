@@ -24,13 +24,30 @@ public class IsAnagram {
         char[] b = t.toCharArray();
         Arrays.sort(a);
         Arrays.sort(b);
-        return Arrays.equals(a,b);
+        return Arrays.equals(a, b);
+    }
+
+    public boolean isAnagram2(String s, String t) {
+        int[] alphabet = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            alphabet[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < t.length(); i++) {
+            alphabet[t.charAt(i) - 'a']--;
+        }
+        for (int i : alphabet) {
+            if (i != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Test
     public void test() {
-        String a = "abcd";
-        String b = "dcba";
+        String a = "abcdhuhuhu";
+        String b = "dcbahuhuhu";
         System.out.println(isAnagram(a, b));
+        System.out.println(isAnagram2(a, b));
     }
 }
