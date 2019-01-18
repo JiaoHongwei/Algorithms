@@ -5,9 +5,10 @@
  * @Version 1.0
  */
 public class SingleTon {
-    private static volatile SingleTon singleTon;
+    private static  SingleTon singleTon;
 
     private SingleTon() {
+        System.out.println("SingleTon init...");
     }
 
     public static SingleTon getInstance() {
