@@ -1,6 +1,6 @@
 package com.hw.chapter_2;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 /**
  * @Description TODO
@@ -15,23 +15,39 @@ public class CountDownLatchDemo {
 
     public static void main(String[] args) {
 
-        for (int i = 0; i < THREAD_NUM; i++) {
+        ExecutorService executorService = new ThreadPoolExecutor(
+                THREAD_NUM,
+                THREAD_NUM, 0L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "hw");
+            }
+        }, new ThreadPoolExecutor.AbortPolicy());
+//        new ThreadPoolExecutor.DiscardPolicy();
+//        new ThreadPoolExecutor.AbortPolicy();
+//        new ThreadPoolExecutor.CallerRunsPolicy();
 
-            new Thread() {
+        ExecutorService service = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < THREAD_NUM; i++) {
+            executorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         countDownLatch.await();
-                        Thread.sleep(2000);
-                        System.out.println(Thread.currentThread() + " 运行..." + System.currentTimeMillis());
+                        Thread.sleep(1000);
+                        System.out.println(System.currentTimeMillis() + "... 执行..." + " " + Thread.currentThread());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-            }.start();
+            });
             countDownLatch.countDown();
         }
+
         System.out.println("for结束...");
+        executorService.shutdown();
 
     }
 }
