@@ -81,5 +81,8 @@ public class MultiThread {
         thread.isAlive();
         Thread.yield();
         thread.join();
+
+        thread.suspend();
+        thread.resume();
     }
 }
