@@ -19,28 +19,20 @@ public class CountDownLatchDemo {
                 THREAD_NUM,
                 THREAD_NUM, 0L,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "hw");
-            }
-        }, new ThreadPoolExecutor.AbortPolicy());
+                new LinkedBlockingQueue<>(), r -> new Thread(r, "hw"), new ThreadPoolExecutor.AbortPolicy());
 //        new ThreadPoolExecutor.DiscardPolicy();
 //        new ThreadPoolExecutor.AbortPolicy();
 //        new ThreadPoolExecutor.CallerRunsPolicy();
 
         ExecutorService service = Executors.newFixedThreadPool(10);
         for (int i = 0; i < THREAD_NUM; i++) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        countDownLatch.await();
-                        Thread.sleep(1000);
-                        System.out.println(System.currentTimeMillis() + "... 执行..." + " " + Thread.currentThread());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            executorService.execute(() -> {
+                try {
+                    countDownLatch.await();
+                    Thread.sleep(1000);
+                    System.out.println(System.currentTimeMillis() + "... 执行..." + " " + Thread.currentThread());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             });
             countDownLatch.countDown();
