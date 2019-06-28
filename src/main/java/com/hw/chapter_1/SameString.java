@@ -47,5 +47,8 @@ public class SameString {
     public static void main(String[] args) {
         boolean b = sameString("aabcbxaxgxgggggcc", "aaxxgggcgggaxbbcc");
         System.out.println(b);
+        System.out.println(Arrays.toString("abcd".getBytes()));
+        System.out.println(Arrays.toString("ABCD".getBytes()));
+
     }
 }
